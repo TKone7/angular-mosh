@@ -1,3 +1,7 @@
+import { NotFoundComponent } from './not-found/not-found.component';
+import { GithubProfileComponent } from './github-profile/github-profile.component';
+import { HomeComponent } from './home/home.component';
+import { NavbarComponent } from './navbar/navbar.component';
 import { FollowerService } from './services/follower.service';
 import { AppErrorHandler } from './common/app-error-handler';
 import { ProductService } from './services/product.service';
@@ -54,14 +58,18 @@ import { MyFollowersComponent } from './my-followers/my-followers.component';
     PwdChangeFormComponent,
     PostsComponent,
     ProductsComponent,
-    MyFollowersComponent   
+    MyFollowersComponent,
+    NavbarComponent,
+    HomeComponent,
+    GithubProfileComponent,
+    NotFoundComponent
   ],
   imports: [
     BrowserModule,
     FormsModule,
     ReactiveFormsModule,
     AppRoutingModule,
-    HttpClientModule   
+    HttpClientModule
   ],
   providers: [
     // singleton pattern of the services defined here

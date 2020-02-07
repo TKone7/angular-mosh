@@ -2,6 +2,9 @@ import { AppError } from './../common/app-error';
 import { ProductService, Product } from './../services/product.service';
 import { Component, OnInit } from '@angular/core';
 import { NotFoundError } from '../common/not-found-error';
+import { combineLatest } from 'rxjs';
+import { switchMap } from 'rxjs/operators';
+import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
   selector: 'products',
@@ -11,39 +14,52 @@ import { NotFoundError } from '../common/not-found-error';
 export class ProductsComponent implements OnInit {
   
   result: Product[];
-  nextPage: number;
-  prevPage: number;
   currPage: number;
+  perPage: number;
   maxPage: number;
-  constructor(private service: ProductService) { }
+
+  constructor(
+    private service: ProductService,
+    private route: ActivatedRoute,
+    private router: Router
+  ){}
+
   ngOnInit(): void {
-    this.loadProducts(null)
+    this.route.queryParamMap
+      .pipe(
+        switchMap(query => {
+          this.perPage = +query.get('per_page');
+          this.currPage = +query.get('page');
+          return this.service.getResourcePage(this.perPage, this.currPage);
+        })
+      )
+    .subscribe(resource => {
+      this.result = resource.items;
+      this.maxPage = resource._meta.total_pages;
+      this.perPage = resource._meta.per_page;
+      this.currPage = resource._meta.page;
+    },
+    (error: AppError) => {
+      if(error instanceof NotFoundError)
+        alert('This product doesnt exist.');
+      else{
+        throw error;
+      }
+    });
   }
-  loadProducts(perPage?: number, page?: number){
-    this.service.getResourcePage(perPage,page)
-      .subscribe(
-        res => {
-          console.log(res);
-          this.result = res.items;
-          this.currPage = res._meta.page;
-          this.maxPage = res._meta.total_pages;
-          this.nextPage = this.currPage + 1;
-          this.prevPage = this.currPage - 1;
-        },
-        (error: AppError) => {
-          if(error instanceof NotFoundError)
-            alert('This product doesnt exist.');
-          else{
-            alert("An unexpected error occurred.");
-            console.log(error);
-          }
-        }
-      );
-  }
+  
   onNext(){
-    this.loadProducts(null,this.nextPage);
+    this.router.navigate(['/products'], {
+      queryParams: {per_page: this.perPage, page: this.currPage +1}
+    });
   }
   onPrev(){
-    this.loadProducts(null,this.prevPage);
+    this.router.navigate(['/products'], {
+      queryParams: {per_page: this.perPage, page: this.currPage -1}
+    });  
   }
+  onResultsChange(){
+    this.router.navigate(['/products'], {
+      queryParams: {per_page: this.perPage, page: 1}
+    });  }
 }

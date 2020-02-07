@@ -1,3 +1,11 @@
+
+<div class="form-group">
+    <select class="form-control" [(ngModel)]="perPage" (change)="onResultsChange(nr)">
+        <option value="5">5</option>
+        <option value="10">10</option>
+        <option value="20">20</option>
+    </select>
+</div>
 <ul class="list-group">
     <li *ngFor="let item of result" class="list-group-item">
         {{ item.barcode }}: {{ item.name }} - {{ item.description }}
@@ -6,10 +14,11 @@
 <button
     (click)="onPrev()"
     [disabled]="!(currPage>1)"
-    class="btn btn-default">Previous Page</button
+    class="btn btn-default"><span class="glyphicon glyphicon-arrow-left"></span></button
     >
+{{ currPage }} / {{ maxPage }}
 <button
     (click)="onNext()"
     [disabled]="!(currPage<maxPage)"
-    class="btn btn-default">Next Page</button
+    class="btn btn-default"><span class="glyphicon glyphicon-arrow-right"></span></button
     >
