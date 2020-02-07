@@ -1,0 +1,11 @@
+.panel-heading {
+    font-weight: bold;
+    cursor: pointer;
+    
+}
+.zippy-collapsed {
+    background-color: white;
+}
+.glyphicon {
+    float:right;
+}

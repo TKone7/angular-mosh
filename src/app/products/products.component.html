@@ -1,0 +1,15 @@
+<ul class="list-group">
+    <li *ngFor="let item of result" class="list-group-item">
+        {{ item.barcode }}: {{ item.name }} - {{ item.description }}
+    </li>
+</ul>
+<button
+    (click)="onPrev()"
+    [disabled]="!(currPage>1)"
+    class="btn btn-default">Previous Page</button
+    >
+<button
+    (click)="onNext()"
+    [disabled]="!(currPage<maxPage)"
+    class="btn btn-default">Next Page</button
+    >

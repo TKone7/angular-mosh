@@ -1,0 +1,11 @@
+
+<p>star works!</p>
+<i class="glyphicon" 
+  (click)="onClick()" 
+
+  [ngClass]="{
+    'glyphicon-star': isFavorite,
+    'glyphicon-star-empty': !isFavorite
+  }"
+  [style.fontSize]="size">
+</i>

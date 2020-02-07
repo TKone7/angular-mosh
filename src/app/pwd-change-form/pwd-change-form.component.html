@@ -1,0 +1,46 @@
+
+<form [formGroup]="form">
+    <div class="form-group">
+        <label for="oldPwd">Old Password</label>
+        <input
+        formControlName="oldPwd"
+        type="password"
+        class="form-control"
+        id="oldPwd">
+    </div>
+    <div *ngIf="oldPwd.touched && oldPwd.invalid" class="alert alert-danger">
+        <div *ngIf="oldPwd.errors.required">Old Password must be filled.</div>
+        <div *ngIf="oldPwd.errors.invalidOldPwd">Old Password not correct.</div>
+    </div>
+
+
+    <div class="form-group">
+        <label for="newPwd">New Password</label>
+        <input
+        formControlName="newPwd"
+        type="password"
+        class="form-control"
+        id="newPwd">
+        <div *ngIf="newPwd.touched && newPwd.invalid" class="alert alert-danger">
+            <div *ngIf="newPwd.errors.required">New Password must be filled.</div>
+        </div>
+    </div>
+    
+    <div class="form-group">
+        <label for="newPwdRep">Repeat Password</label>
+        <input
+        formControlName="newPwdRep"
+        type="password"
+        class="form-control"
+        id="newPwdRep">
+        <div *ngIf="newPwdRep.touched && newPwdRep.invalid" class="alert alert-danger">
+            <div *ngIf="newPwdRep.errors.required">Repeat Password must be filled.</div>
+        </div>
+    </div>
+
+    <div *ngIf="newPwdRep.valid && form.invalid && form.errors?.newPwdEqual" class="alert alert-danger">The passwords don't match.</div>
+
+    
+    
+    <button class="btn btn-primary">Change</button>
+</form>
